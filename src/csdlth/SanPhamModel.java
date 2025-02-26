@@ -17,18 +17,10 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 
-public class DataModel {
+public class SanPhamModel {
 
-    /**
-     * Hàm lấy dữ liệu từ một URL thông qua HTTP Request và trả về dữ liệu dưới dạng
-     * ArrayList.
-     * 
-     * @param url Địa chỉ URL để lấy dữ liệu.
-     * @return ArrayList<ArrayList<String>>: Dữ liệu thu thập từ URL, dạng bảng.
-     * @throws IOException          Nếu có lỗi khi đọc dữ liệu.
-     * @throws InterruptedException Nếu có lỗi khi gửi yêu cầu HTTP.
-     * @throws JSONException        Nếu có lỗi khi xử lý dữ liệu JSON.
-     */
+    // Hàm lấy dữ liệu từ một URL thông qua HTTP Request và trả về dữ liệu dưới dạng ArrayList.
+     
     public ArrayList<ArrayList<String>> get(String url)
             throws IOException, InterruptedException, JSONException {
         HttpClient client = HttpClient.newHttpClient();
@@ -56,13 +48,8 @@ public class DataModel {
         return datalist;
     }
 
-    /**
-     * Hàm chuyển ArrayList dữ liệu thành DefaultTableModel cho JTable.
-     * 
-     * @param tenCot Mảng tên các cột của bảng.
-     * @param d      Dữ liệu dạng ArrayList cần hiển thị.
-     * @return DefaultTableModel: Mô hình bảng dữ liệu.
-     */
+    //Hàm chuyển ArrayList dữ liệu thành DefaultTableModel cho JTable.
+    
     public DefaultTableModel getTableModel(String[] tenCot, ArrayList<ArrayList<String>> d) {
         DefaultTableModel tableModel = new DefaultTableModel(tenCot, 0);
         for (int i = 0; i < d.size(); i++) {
@@ -75,14 +62,8 @@ public class DataModel {
         return tableModel;
     }
 
-    /**
-     * Hàm thêm dữ liệu vào DefaultTableModel đã có sẵn.
-     * 
-     * @param tableModel Mô hình bảng hiện tại.
-     * @param d          Dữ liệu cần thêm vào bảng.
-     * @param tenCot     Mảng tên cột.
-     * @return DefaultTableModel: Mô hình bảng đã được cập nhật.
-     */
+    //Hàm thêm dữ liệu vào DefaultTableModel đã có sẵn.
+     
     public DefaultTableModel addTableModel(DefaultTableModel tableModel,
             ArrayList<ArrayList<String>> d,
             String tenCot[]) {
@@ -99,15 +80,8 @@ public class DataModel {
         return tableModel;
     }
 
-    /**
-     * Hàm lấy dữ liệu từ các IP trong file và hiển thị lên JTable.
-     * 
-     * @param f          File chứa danh sách các IP.
-     * @param tableModel Mô hình bảng hiện tại để cập nhật.
-     * @param tblResult  JTable để hiển thị kết quả.
-     * @param txtError   JTextArea để hiển thị thông báo lỗi.
-     * @param tenCot     Mảng tên các cột.
-     */
+    //Hàm lấy dữ liệu từ các IP trong file và hiển thị lên JTable.
+ 
     public void getDataSanPhamvaLoadTable(File f, DefaultTableModel tableModel, JTable tblResult,
             JTextArea txtError, String[] tenCot, String manh) {
         if (f == null) {
@@ -129,8 +103,8 @@ public class DataModel {
 
         // Duyệt qua các IP và cố gắng kết nối lấy dữ liệu
         for (String ip : aIP) {
-            String url = "http://" + ip + "/" + "sanpham/manh" + manh;
-            DataModel db = new DataModel();
+            String url = "http://" + ip + "/" + "sanpham/sanpham" + manh;
+            SanPhamModel db = new SanPhamModel();
 
             try {
                 // Cố gắng lấy dữ liệu từ URL
@@ -139,6 +113,7 @@ public class DataModel {
                 // Thêm dữ liệu vào table model
                 DefaultTableModel updatedTableModel = db.addTableModel(tableModel, data, tenCot);
                 tblResult.setModel(updatedTableModel);
+                txtError.setText("succed:" + url);
 
             } catch (ConnectException e1) {
                 // Nếu không thể kết nối, hiển thị lỗi trong JTextArea
@@ -159,6 +134,7 @@ public class DataModel {
         }
     }
 
+    // Hàm lấy dữ liệu từ một URL thông qua HTTP Request và trả về dữ liệu dưới dạng ArrayList.
     public ArrayList<ArrayList<String>> getDataFromManh(File f, JTextArea txtError, String manh) {
         if (f == null) {
             return null;
@@ -180,8 +156,8 @@ public class DataModel {
 
         // Duyệt qua các IP và cố gắng kết nối lấy dữ liệu
         for (String ip : aIP) {
-            String url = "http://" + ip + "/" + "sanpham/manh" + manh;
-            DataModel db = new DataModel();
+            String url = "http://" + ip + "/" + "sanpham/sanpham" + manh;
+            SanPhamModel db = new SanPhamModel();
 
             try {
                 // Cố gắng lấy dữ liệu từ URL
@@ -207,6 +183,7 @@ public class DataModel {
         return data;
     }
 
+    // Kết dọc 2 bảng
     public ArrayList<ArrayList<String>> Combie2Table(ArrayList<ArrayList<String>> a, ArrayList<ArrayList<String>> b) {
         ArrayList<ArrayList<String>> combinedData = new ArrayList<>();
 
@@ -253,5 +230,18 @@ public class DataModel {
 
         return combinedData;
     }
+
+    // Kết ngang
+    public ArrayList<ArrayList<String>> GhepPhanManhNgang(ArrayList<ArrayList<String>> a, ArrayList<ArrayList<String>> b){ 
+        ArrayList<ArrayList<String>> c = new ArrayList<>();
+        for(int i=0;i<a.size();i++){
+        c.add(a.get(i));
+        }
+        for(int j=0;j<b.size();j++){
+        c.add(b.get(j));
+        } 
+        return c;
+    }
+ 
 
 }

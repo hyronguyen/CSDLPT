@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
 import java.util.ArrayList;
-
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public class Giaodienchinh extends javax.swing.JFrame {
@@ -17,11 +17,13 @@ public class Giaodienchinh extends javax.swing.JFrame {
 
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();  // Manh3 button
+        jButton5 = new javax.swing.JButton();  // Sanpham_2 button
         jScrollPane1 = new javax.swing.JScrollPane();
         tblResult = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtError = new javax.swing.JTextArea();
-        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Co So Du Lieu Phan Tang");
@@ -53,8 +55,12 @@ public class Giaodienchinh extends javax.swing.JFrame {
             }
         });
 
-        // Button 3 (Sanpham)
-        jButton2.setText("Sanpham");
+        // Panel to group Sanpham_1 and Sanpham_2
+        JPanel pnlSanpham = new JPanel();
+        pnlSanpham.setLayout(new BoxLayout(pnlSanpham, BoxLayout.X_AXIS));  // Arrange buttons horizontally
+
+        // Button 3 (Sanpham_1)
+        jButton2.setText("Sanpham_1");
         jButton2.setBackground(new Color(255, 87, 34)); // Orange button
         jButton2.setForeground(Color.WHITE);
         jButton2.setFont(new Font("Arial", Font.BOLD, 14));
@@ -62,6 +68,35 @@ public class Giaodienchinh extends javax.swing.JFrame {
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
+            }
+        });
+
+        // Button 5 (Sanpham_2)
+        jButton5.setText("Sanpham_2");
+        jButton5.setBackground(new Color(255, 87, 34)); // Orange button
+        jButton5.setForeground(Color.WHITE);
+        jButton5.setFont(new Font("Arial", Font.BOLD, 14));
+        jButton5.setFocusPainted(false);
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt); // Action handler for Sanpham_2
+            }
+        });
+
+        // Add both buttons to the panel
+        pnlSanpham.add(jButton2);
+        pnlSanpham.add(Box.createHorizontalStrut(10)); // Add some spacing between buttons
+        pnlSanpham.add(jButton5);
+
+        // Button 4 (Manh3)
+        jButton4.setText("Manh3");
+        jButton4.setBackground(new Color(0, 123, 255)); // Blue button
+        jButton4.setForeground(Color.WHITE);
+        jButton4.setFont(new Font("Arial", Font.BOLD, 14));
+        jButton4.setFocusPainted(false);
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt); // Action handler for Manh3
             }
         });
 
@@ -104,9 +139,12 @@ public class Giaodienchinh extends javax.swing.JFrame {
                                                 .addComponent(jButton1)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(jButton3)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jButton4)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(pnlSanpham) // Add grouped panel here
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-                                                        139, Short.MAX_VALUE)
-                                                .addComponent(jButton2))
+                                                        40, Short.MAX_VALUE))
                                         .addComponent(jScrollPane2))
                                 .addContainerGap(17, Short.MAX_VALUE)));
         layout.setVerticalGroup(
@@ -116,7 +154,8 @@ public class Giaodienchinh extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jButton1)
                                         .addComponent(jButton3)
-                                        .addComponent(jButton2))
+                                        .addComponent(jButton4)
+                                        .addComponent(pnlSanpham)) // Add the panel containing buttons here
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 203,
                                         javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -128,48 +167,108 @@ public class Giaodienchinh extends javax.swing.JFrame {
         pack();
     }
 
+    // Action for Manh1 button
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         DefaultTableModel tblmodel = new DefaultTableModel();
         String[] tenCot = { "Ma San Pham", "Ten San Pham" };
         tblmodel.setColumnIdentifiers(tenCot);
 
         File f = new File("D:/sanpham_1.txt");
-        DataModel db = new DataModel();
+        SanPhamModel db = new SanPhamModel();
         db.getDataSanPhamvaLoadTable(f, tblmodel, tblResult, txtError, tenCot, "1");
         tblResult.setModel(tblmodel);
     }
 
+    // Action for Manh2 button
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
         DefaultTableModel tblmodel = new DefaultTableModel();
         String[] tenCot = { "Ma San Pham", "Gia Ban", "Ma Kho" };
         tblmodel.setColumnIdentifiers(tenCot);
 
         File f = new File("D:/sanpham_2.txt");
-        DataModel db = new DataModel();
+        SanPhamModel db = new SanPhamModel();
         db.getDataSanPhamvaLoadTable(f, tblmodel, tblResult, txtError, tenCot, "2");
         tblResult.setModel(tblmodel);
     }
 
+    // Action for Sanpham_1 button
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
+        SanPhamModel db = new SanPhamModel(); 
+        File f = new File("D:/sanpham_1.txt");
+        ArrayList<ArrayList<String>> a = db.getDataFromManh(f, txtError, "1");
+        f = new File("D:/sanpham_2.txt");
+        ArrayList<ArrayList<String>> b = db.getDataFromManh(f, txtError, "2");
+        f = new File("D:/sanpham_3.txt");
+        ArrayList<ArrayList<String>> c = db.getDataFromManh(f, txtError, "3");
+        
+        ArrayList<ArrayList<String>> result = null;
+        result=db.Combie2Table(a, b);
+        result=db.GhepPhanManhNgang(result, c);
+        
+        String tenCot[] = {"Ma San Pham", "Ten San Pham", "Gia Ban", "Ma Kho"};
+        DefaultTableModel tblmodel = db.getTableModel(tenCot, result);
+        tblResult.setModel(tblmodel);
+    }
+
+    // Action for Sanpham_2 button
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {
+        SanPhamModel db = new SanPhamModel(); 
+        File f = new File("D:/sanpham_1.txt");
+        ArrayList<ArrayList<String>> a = db.getDataFromManh(f, txtError, "1");
+        f = new File("D:/sanpham_2.txt");
+        ArrayList<ArrayList<String>> b = db.getDataFromManh(f, txtError, "2");
+        f = new File("D:/sanpham_3.txt");
+        ArrayList<ArrayList<String>> c = db.getDataFromManh(f, txtError, "3");
+        
+        ArrayList<ArrayList<String>> sp = null;
+        sp=db.Combie2Table(a, b);
+        sp=db.GhepPhanManhNgang(sp, c);
+        
+        KhoHangModel khodb = new KhoHangModel();
+        f = new File("D:/sanpham_1.txt");
+        ArrayList<ArrayList<String>> kh = khodb.getDataFromManh(f, txtError);
+        
+        ArrayList<ArrayList<String>> result = new ArrayList<>();
+        for (int i = 0; i < sp.size(); i++) {
+                ArrayList<String> row_sp = sp.get(i);
+                for (int j = 0; j < kh.size(); j++) {
+                        ArrayList<String> row_kh = kh.get(j);
+                        if (row_sp.get(3).equals(row_kh.get(0))) {
+                        ArrayList<String> row_result = new ArrayList<>();
+                        row_result.add(row_sp.get(0));
+                        row_result.add(row_sp.get(1));
+                        row_result.add(row_sp.get(2));
+                        row_result.add(row_kh.get(1));
+                        row_result.add(row_kh.get(2));
+                        result.add(row_result);
+                        }
+                }
+        } 
+ 
+        String tenCot[] = {"Ma San Pham", "Ten San Pham", "Gia Ban", "Ten Kho","Dia Chi Kho"};
+        DefaultTableModel tblmodel = db.getTableModel(tenCot, result);
+        tblResult.setModel(tblmodel);
+
+    }
+
+    // Action for Manh3 button
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {
         DefaultTableModel tblmodel = new DefaultTableModel();
-        String[] tenCot = {"Ma San Pham", "Ten San Pham", "Gia Ban", "Ma Kho"};
+        String[] tenCot = { "Ma San Pham", "Ten San Pham", "Gia Ban", "Ma Kho" };
 
         tblmodel.setColumnIdentifiers(tenCot);
 
-        File f = new File("D:/sanpham_1.txt");
-        DataModel db = new DataModel();
-        
-        ArrayList<ArrayList<String>> sanpham1 = db.getDataFromManh(f, txtError,"1");
-        f = new File("D:/sanpham_2.txt");
-        ArrayList<ArrayList<String>> sanpham2 = db.getDataFromManh(f, txtError,"2");
-        ArrayList<ArrayList<String>> sanpham = db.Combie2Table(sanpham1, sanpham2);
-
-        tblResult.setModel(db.addTableModel(tblmodel, sanpham, tenCot));
+        File f = new File("D:/sanpham_3.txt"); // Assuming this is the correct path for Manh3
+        SanPhamModel db = new SanPhamModel();
+        db.getDataSanPhamvaLoadTable(f, tblmodel, tblResult, txtError, tenCot, "3");
+        tblResult.setModel(tblmodel);
     }
 
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4; // New button variable for Manh3
+    private javax.swing.JButton jButton5; // New button variable for Sanpham_2
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tblResult;
